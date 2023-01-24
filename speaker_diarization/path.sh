@@ -1,4 +1,4 @@
-export TOOLS_DIR=$PWD/../../tools
+export TOOLS_DIR=$PWD/../tools
 # dscore.
 export PATH=$TOOLS_DIR/dscore:$PATH
 # Kaldi.
