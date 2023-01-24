@@ -1,0 +1,7 @@
+# nnet3-init --srand=-2 exp/dihard3_sad_tdnn_stats/configs/init.config exp/dihard3_sad_tdnn_stats/init.raw 
+# Started at Fri Jan 20 17:59:20 IST 2023
+#
+nnet3-init --srand=-2 exp/dihard3_sad_tdnn_stats/configs/init.config exp/dihard3_sad_tdnn_stats/init.raw 
+LOG (nnet3-init[5.5.1060~1-ae8cb]:main():nnet3-init.cc:80) Initialized raw neural net and wrote it to exp/dihard3_sad_tdnn_stats/init.raw
+# Accounting: time=0 threads=1
+# Ended (code 0) at Fri Jan 20 17:59:20 IST 2023, elapsed time 0 seconds

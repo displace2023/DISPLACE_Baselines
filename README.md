@@ -34,20 +34,20 @@ The data should be arranged for the baseline experiments should be as follows:
    
 ───<DEV/EVAL data dir>
     │
-    └───<data>
+    └─── data
          |
-         └───<rttm dir> 
+         └─── rttm 
          |        |
          |        └───<<Session_ID>_speaker.rttm>
          │ 
-         └───<wav dir>
+         └─── wav
                  └───<<Session_ID>.wav>
                  
 ```
 We request the participants to arrange the shared DEV and EVAL sets in the above format for baseline computation.
-- The <rttm_dir> should contain the rttm files corresponding to speaker splits.
-- The <wav_dir> should contain the corresponding wav files.
-- The corresponding files are indicated by the <Session_ID>
+- The directory "rttm" should contain the rttm files corresponding to speaker splits.
+- The directory "wav" should contain the corresponding wav files.
+- The corresponding files in the directories are indicated by the <Session_ID>
 
 # Installation
   

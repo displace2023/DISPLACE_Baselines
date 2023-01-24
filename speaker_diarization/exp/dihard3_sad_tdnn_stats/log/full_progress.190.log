@@ -1,0 +1,65 @@
+# nnet3-show-progress --use-gpu=no --verbose=2 exp/dihard3_sad_tdnn_stats/189.raw exp/dihard3_sad_tdnn_stats/190.raw 
+# Started at Sat Nov 28 18:46:49 EST 2020
+#
+nnet3-show-progress --use-gpu=no --verbose=2 exp/dihard3_sad_tdnn_stats/189.raw exp/dihard3_sad_tdnn_stats/190.raw 
+LOG (nnet3-show-progress[5.5.810~1-76a979]:SelectGpuId():cu-device.cc:153) Manually selected to compute on CPU.
+VLOG[1] (nnet3-show-progress[5.5.810~1-76a979]:main():nnet3-show-progress.cc:136) Printing info for the difference between the neural nets: left-context: 24
+right-context: 46
+num-parameters: 1229878
+modulus: 18
+input-node name=input dim=40
+component-node name=lda component=lda input=Append(Offset(input, -2), Offset(input, -1), input, Offset(input, 1), Offset(input, 2)) input-dim=200 output-dim=200
+component-node name=tdnn1.affine component=tdnn1.affine input=lda input-dim=200 output-dim=255
+component-node name=tdnn1.relu component=tdnn1.relu input=tdnn1.affine input-dim=255 output-dim=255
+component-node name=tdnn1.renorm component=tdnn1.renorm input=tdnn1.relu input-dim=255 output-dim=256
+component-node name=tdnn2.affine component=tdnn2.affine input=Append(Offset(tdnn1.renorm, -1), tdnn1.renorm, Offset(tdnn1.renorm, 1), Offset(tdnn1.renorm, 2)) input-dim=1024 output-dim=255
+component-node name=tdnn2.relu component=tdnn2.relu input=tdnn2.affine input-dim=255 output-dim=255
+component-node name=tdnn2.renorm component=tdnn2.renorm input=tdnn2.relu input-dim=255 output-dim=256
+component-node name=tdnn3.affine component=tdnn3.affine input=Append(Offset(tdnn2.renorm, -3), tdnn2.renorm, Offset(tdnn2.renorm, 3), Offset(tdnn2.renorm, 6)) input-dim=1024 output-dim=255
+component-node name=tdnn3.relu component=tdnn3.relu input=tdnn3.affine input-dim=255 output-dim=255
+component-node name=tdnn3.renorm component=tdnn3.renorm input=tdnn3.relu input-dim=255 output-dim=256
+component-node name=tdnn3_stats-extraction-99-99 component=tdnn3_stats-extraction-99-99 input=tdnn3.renorm input-dim=256 output-dim=257
+component-node name=tdnn3_stats-pooling-99-99 component=tdnn3_stats-pooling-99-99 input=tdnn3_stats-extraction-99-99 input-dim=257 output-dim=257
+component-node name=tdnn4.affine component=tdnn4.affine input=Append(Offset(tdnn3.renorm, -6), tdnn3.renorm, Offset(tdnn3.renorm, 6), Offset(tdnn3.renorm, 12), Round(tdnn3_stats-pooling-99-99, 9)) input-dim=1281 output-dim=255
+component-node name=tdnn4.relu component=tdnn4.relu input=tdnn4.affine input-dim=255 output-dim=255
+component-node name=tdnn4.renorm component=tdnn4.renorm input=tdnn4.relu input-dim=255 output-dim=256
+component-node name=tdnn4_stats-extraction-108-108 component=tdnn4_stats-extraction-108-108 input=tdnn4.renorm input-dim=256 output-dim=257
+component-node name=tdnn4_stats-pooling-108-108 component=tdnn4_stats-pooling-108-108 input=tdnn4_stats-extraction-108-108 input-dim=257 output-dim=257
+component-node name=tdnn5.affine component=tdnn5.affine input=Append(Offset(tdnn4.renorm, -12), tdnn4.renorm, Offset(tdnn4.renorm, 12), Offset(tdnn4.renorm, 24), Round(tdnn4_stats-pooling-108-108, 18)) input-dim=1281 output-dim=256
+component-node name=tdnn5.relu component=tdnn5.relu input=tdnn5.affine input-dim=256 output-dim=256
+component-node name=tdnn5.renorm component=tdnn5.renorm input=tdnn5.relu input-dim=256 output-dim=256
+component-node name=output.affine component=output.affine input=tdnn5.renorm input-dim=256 output-dim=3
+component-node name=output.log-softmax component=output.log-softmax input=output.affine input-dim=3 output-dim=3
+output-node name=output input=output.log-softmax dim=3 objective=linear
+component name=lda type=FixedAffineComponent, input-dim=200, output-dim=200, linear-params-rms=0.0017, bias-{mean,stddev}=0.01236,0.1777
+component name=tdnn1.affine type=NaturalGradientAffineComponent, input-dim=200, output-dim=255, learning-rate=0.000351233, max-change=0.75, linear-params-rms=0.001179, linear-params-row-norms=[percentiles(0,1,2,5 10,20,50,80,90 95,98,99,100)=(3e-05,3e-05,3e-05,3e-05 3e-05,3e-05,0.004,0.02,0.03 0.03,0.03,0.04,0.04), mean=0.0117, stddev=0.0119], linear-params-col-norms=[percentiles(0,1,2,5 10,20,50,80,90 95,98,99,100)=(0.01,0.01,0.01,0.02 0.02,0.02,0.02,0.02,0.02 0.02,0.02,0.02,0.03), mean=0.0187, stddev=0.00232], linear-params-singular-values=[percentiles(0,1,2,5 10,20,50,80,90 95,98,99,100)=(4e-07,9e-07,3e-06,2e-05 0.0002,0.0005,0.006,0.02,0.03 0.04,0.05,0.06,0.06), mean=0.0121, stddev=0.0144], bias-{mean,stddev}=-4.894e-05,0.001727, rank-in=20, rank-out=80, num-samples-history=2000, update-period=4, alpha=4
+component name=tdnn1.relu type=RectifiedLinearComponent, dim=255, self-repair-scale=1e-05
+component name=tdnn1.renorm type=NormalizeComponent, input-dim=255, output-dim=256, target-rms=1, add-log-stddev=true
+component name=tdnn2.affine type=NaturalGradientAffineComponent, input-dim=1024, output-dim=255, learning-rate=0.000351233, max-change=0.75, linear-params-rms=0.0006963, linear-params-row-norms=[percentiles(0,1,2,5 10,20,50,80,90 95,98,99,100)=(0.003,0.005,0.005,0.005 0.007,0.008,0.01,0.03,0.04 0.04,0.05,0.05,0.06), mean=0.0185, stddev=0.0124], linear-params-col-norms=[percentiles(0,1,2,5 10,20,50,80,90 95,98,99,100)=(0,0,0,0 0,0,0.003,0.02,0.02 0.02,0.02,0.02,0.02), mean=0.00794, stddev=0.00778], linear-params-singular-values=[percentiles(0,1,2,5 10,20,50,80,90 95,98,99,100)=(0.0007,0.0009,0.0009,0.001 0.001,0.002,0.006,0.02,0.03 0.05,0.07,0.08,0.11), mean=0.0135, stddev=0.0177], bias-{mean,stddev}=-3.381e-06,3.336e-05, rank-in=20, rank-out=80, num-samples-history=2000, update-period=4, alpha=4
+component name=tdnn2.relu type=RectifiedLinearComponent, dim=255, self-repair-scale=1e-05, count=6.38e+04, self-repaired-proportion=0, value-avg=[percentiles(0,1,2,5 10,20,50,80,90 95,98,99,100)=(-0.08,-0.008,-0.0004,0.01 0.04,0.06,0.19,0.84,1.8 3.7,5.5,6.8,11), mean=0.711, stddev=1.42], deriv-avg=[percentiles(0,1,2,5 10,20,50,80,90 95,98,99,100)=(-0.10,0.002,0.05,0.07 0.11,0.16,0.32,0.58,0.79 0.89,0.93,0.94,0.97), mean=0.37, stddev=0.249]
+component name=tdnn2.renorm type=NormalizeComponent, input-dim=255, output-dim=256, target-rms=1, add-log-stddev=true
+component name=tdnn3.affine type=NaturalGradientAffineComponent, input-dim=1024, output-dim=255, learning-rate=0.000351233, max-change=0.75, linear-params-rms=0.0005135, linear-params-row-norms=[percentiles(0,1,2,5 10,20,50,80,90 95,98,99,100)=(0.004,0.006,0.006,0.008 0.008,0.01,0.02,0.02,0.02 0.02,0.02,0.03,0.03), mean=0.0156, stddev=0.00514], linear-params-col-norms=[percentiles(0,1,2,5 10,20,50,80,90 95,98,99,100)=(0.0004,0.0006,0.0008,0.001 0.001,0.002,0.004,0.01,0.02 0.02,0.02,0.02,0.03), mean=0.00609, stddev=0.00549], linear-params-singular-values=[percentiles(0,1,2,5 10,20,50,80,90 95,98,99,100)=(0.001,0.001,0.001,0.002 0.002,0.003,0.007,0.02,0.03 0.04,0.05,0.05,0.07), mean=0.0112, stddev=0.012], bias-{mean,stddev}=-4.245e-06,0.0001058, rank-in=20, rank-out=80, num-samples-history=2000, update-period=4, alpha=4
+component name=tdnn3.relu type=RectifiedLinearComponent, dim=255, self-repair-scale=1e-05, count=2.6e+04, self-repaired-proportion=0, value-avg=[percentiles(0,1,2,5 10,20,50,80,90 95,98,99,100)=(-0.24,-0.12,-0.07,0.02 0.10,0.24,0.74,1.6,2.4 3.0,3.7,4.6,5.4), mean=1.03, stddev=0.997], deriv-avg=[percentiles(0,1,2,5 10,20,50,80,90 95,98,99,100)=(-0.11,0.03,0.05,0.08 0.15,0.23,0.41,0.62,0.72 0.80,0.88,0.91,0.99), mean=0.431, stddev=0.217]
+component name=tdnn3.renorm type=NormalizeComponent, input-dim=255, output-dim=256, target-rms=1, add-log-stddev=true
+component name=tdnn3_stats-extraction-99-99 type=StatisticsExtractionComponent, input-dim=256, output-dim=257
+component name=tdnn3_stats-pooling-99-99 type=StatisticsPoolingComponent, input-dim=257, output-dim=257
+component name=tdnn4.affine type=NaturalGradientAffineComponent, input-dim=1281, output-dim=255, learning-rate=0.000351233, max-change=0.75, linear-params-rms=0.0007327, linear-params-row-norms=[percentiles(0,1,2,5 10,20,50,80,90 95,98,99,100)=(0.01,0.01,0.01,0.02 0.02,0.02,0.03,0.03,0.03 0.03,0.04,0.04,0.04), mean=0.0256, stddev=0.0058], linear-params-col-norms=[percentiles(0,1,2,5 10,20,50,80,90 95,98,99,100)=(0.0008,0.001,0.002,0.003 0.004,0.006,0.01,0.02,0.02 0.02,0.02,0.02,0.03), mean=0.0106, stddev=0.00494], linear-params-singular-values=[percentiles(0,1,2,5 10,20,50,80,90 95,98,99,100)=(0.005,0.005,0.005,0.006 0.007,0.008,0.02,0.03,0.04 0.05,0.07,0.08,0.09), mean=0.0206, stddev=0.0162], bias-{mean,stddev}=3.904e-07,6.201e-05, rank-in=20, rank-out=80, num-samples-history=2000, update-period=4, alpha=4
+component name=tdnn4.relu type=RectifiedLinearComponent, dim=255, self-repair-scale=1e-05
+component name=tdnn4.renorm type=NormalizeComponent, input-dim=255, output-dim=256, target-rms=1, add-log-stddev=true
+component name=tdnn4_stats-extraction-108-108 type=StatisticsExtractionComponent, input-dim=256, output-dim=257
+component name=tdnn4_stats-pooling-108-108 type=StatisticsPoolingComponent, input-dim=257, output-dim=257
+component name=tdnn5.affine type=NaturalGradientAffineComponent, input-dim=1281, output-dim=256, learning-rate=0.000351233, max-change=0.75, linear-params-rms=0.0008972, linear-params-row-norms=[percentiles(0,1,2,5 10,20,50,80,90 95,98,99,100)=(0.0005,0.0006,0.0008,0.002 0.005,0.01,0.03,0.04,0.05 0.05,0.05,0.05,0.06), mean=0.0283, stddev=0.0151], linear-params-col-norms=[percentiles(0,1,2,5 10,20,50,80,90 95,98,99,100)=(0.002,0.003,0.003,0.005 0.006,0.008,0.01,0.02,0.02 0.02,0.02,0.03,0.03), mean=0.0131, stddev=0.0058], linear-params-singular-values=[percentiles(0,1,2,5 10,20,50,80,90 95,98,99,100)=(0.0003,0.0003,0.0005,0.001 0.002,0.006,0.02,0.04,0.06 0.07,0.08,0.08,0.09), mean=0.0243, stddev=0.0209], bias-{mean,stddev}=3.031e-06,8.355e-05, rank-in=20, rank-out=80, num-samples-history=2000, update-period=4, alpha=4
+component name=tdnn5.relu type=RectifiedLinearComponent, dim=256, self-repair-scale=1e-05, count=8.66e+03, self-repaired-proportion=0, value-avg=[percentiles(0,1,2,5 10,20,50,80,90 95,98,99,100)=(0.007,0.01,0.02,0.02 0.04,0.09,0.33,0.87,1.1 1.5,1.8,2.0,2.8), mean=0.502, stddev=0.501], deriv-avg=[percentiles(0,1,2,5 10,20,50,80,90 95,98,99,100)=(0.03,0.04,0.05,0.06 0.09,0.16,0.32,0.55,0.64 0.72,0.78,0.81,0.86), mean=0.355, stddev=0.207], oderiv-rms=[percentiles(0,1,2,5 10,20,50,80,90 95,98,99,100)=(0,0,0.0007,0.001 0.003,0.006,0.02,0.02,0.03 0.03,0.03,0.04,0.05), mean=0.0162, stddev=0.00959], oderiv-count=9109.33
+component name=tdnn5.renorm type=NormalizeComponent, input-dim=256, output-dim=256, target-rms=1, add-log-stddev=false
+component name=output.affine type=NaturalGradientAffineComponent, input-dim=256, output-dim=3, learning-rate=3.51233e-05, learning-rate-factor=0.1, max-change=1.5, linear-params-rms=0.0007652, linear-params-row-norms=[ 0.02 0.01 0.0008 ], linear-params-col-norms=[percentiles(0,1,2,5 10,20,50,80,90 95,98,99,100)=(1e-05,4e-05,7e-05,0.0001 0.0002,0.0003,0.0009,0.001,0.002 0.003,0.003,0.003,0.005), mean=0.00102, stddev=0.000844], linear-params-singular-values=[ 0.02 0.0009 2e-07 ], bias-{mean,stddev}=2.484e-09,0.0003229, rank-in=20, rank-out=2, num-samples-history=2000, update-period=4, alpha=4
+component name=output.log-softmax type=LogSoftmaxComponent, dim=3
+
+LOG (nnet3-show-progress[5.5.810~1-76a979]:main():nnet3-show-progress.cc:143) Parameter differences per layer are [ tdnn1.affine:0.267607 tdnn2.affine:0.355813 tdnn3.affine:0.262391 tdnn4.affine:0.418787 tdnn5.affine:0.513787 output.affine:0.0212129 ]
+LOG (nnet3-show-progress[5.5.810~1-76a979]:main():nnet3-show-progress.cc:153) Norms of parameter matrices from <new-nnet-in> are [ tdnn1.affine:31.1098 tdnn2.affine:48.1783 tdnn3.affine:29.7531 tdnn4.affine:31.8783 tdnn5.affine:30.2627 output.affine:2.72745 ]
+LOG (nnet3-show-progress[5.5.810~1-76a979]:main():nnet3-show-progress.cc:157) Relative parameter differences per layer are [ tdnn1.affine:0.00860681 tdnn2.affine:0.0073894 tdnn3.affine:0.00882352 tdnn4.affine:0.013145 tdnn5.affine:0.0169889 output.affine:0.00781057 ]
+LOG (nnet3-show-progress[5.5.810~1-76a979]:PrintProfile():cu-device.cc:533) -----
+[cudevice profile]
+Total GPU time:	0s (may involve some double-counting)
+-----
+# Accounting: time=1 threads=1
+# Ended (code 0) at Sat Nov 28 18:46:50 EST 2020, elapsed time 1 seconds
