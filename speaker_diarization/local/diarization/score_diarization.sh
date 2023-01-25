@@ -52,7 +52,7 @@ tmpdir=$(mktemp -d -t dh3-dscore-XXXXXXXX)
 
 score.py \
   --collar $collar --step $step \
-  -r $release_dir/data/rttm/*.rttm \
+  -r $release_dir/data/final.rttm \
   -s $rttm_dir/*.rttm \
   >  $tmpdir/metrics_full.stdout \
   2> $tmpdir/metrics_full.stderr

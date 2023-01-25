@@ -50,7 +50,7 @@ if [ $stage -le 0 ]; then
   --rttm-dir $DISPLACE_DEV_DIR/data/rttm \
     data/displace_dev_fbank \
     $DISPLACE_DEV_DIR/data/wav
-  ./create_utt2spk_spk2utt.sh data/displace_dev_fbank
+  ./create_utt2spk_spk2utt.sh data/displace_dev_fbank $DISPLACE_DEV_DIR
   ./utils/validate_data_dir.sh \
     --no-text --no-feats data/displace_dev_fbank/
   else
@@ -63,7 +63,7 @@ if [ $stage -le 0 ]; then
     --rttm-dir $DISPLACE_EVAL_DIR/data/rttm \
     data/displace_eval_fbank \
     $DISPLACE_EVAL_DIR/data/wav 
-   ./create_utt2spk_spk2utt.sh data/displace_eval_fbank
+   ./create_utt2spk_spk2utt.sh data/displace_eval_fbank $DISPLACE_EVAL_DIR
   ./utils/validate_data_dir.sh \
     --no-text --no-feats data/displace_eval_fbank/
   else

@@ -8,6 +8,8 @@ In this challenge, we provide a conversational dataset for speaker and language 
 # Updates
 [24/01/2023]: We have released the code to compute the Baseline for speaker diarization. 
 
+[25/01/2023]: We have made updates to the run.sh and scoring scripts please update your files. 
+
 The results are computed on development set part 1 and will be updated with more data. 
 
 # Baseline for speaker diarization 

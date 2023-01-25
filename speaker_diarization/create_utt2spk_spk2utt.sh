@@ -5,3 +5,7 @@ if [ ! -f $path/utt2spk ]; then
 fi
  utils/utt2spk_to_spk2utt.pl \
     $path/utt2spk > $path/spk2utt
+
+source=$path/rttm 
+target=$2/data/final.rttm
+cp $source $target 
