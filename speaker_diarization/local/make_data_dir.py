@@ -41,6 +41,7 @@ from dataclasses import dataclass
 import itertools
 from pathlib import Path
 import sys
+from pdb import set_trace as bp
 
 
 @dataclass
@@ -178,17 +179,20 @@ class Recording:
             Recordings.
         """
         wav_dir = Path(wav_dir)
+        if rttm_dir is not None:
+            rttm_dir = Path(rttm_dir)
         recordings = []
-        wav_paths = sorted(wav_dir.glob('*.wav'))
-        for wav_path in wav_paths:
+        wav_paths = sorted(wav_dir.glob('**/*.wav'))
+        if rttm_dir is not None and rttm_dir.exists():
+            rttm_paths = sorted(rttm_dir.glob('**/*.rttm'))
+        else:
+            rttm_paths = [None for w in wav_paths]
+        for wav_path, rttm_path in zip(wav_paths, rttm_paths):
             recording_id = wav_path.stem
             if sad_dir is not None:
                 lab_path = Path(sad_dir, recording_id + '.lab')
             else:
                 lab_path = None
-            rttm_path = None
-            if rttm_dir is not None and rttm_dir.exists():
-                rttm_path = Path(rttm_dir, recording_id +'_SPEAKER' + '.rttm')
             recordings.append(Recording(
                 recording_id, lab_path, wav_path, rttm_path))
         return recordings
@@ -353,7 +357,7 @@ def main():
         parser.print_help()
         sys.exit(1)
     args = parser.parse_args()
-
+    # bp()
     has_rttm = args.rttm_dir is not None and args.rttm_dir.exists()
     args.data_dir.mkdir(parents=True, exist_ok=True)
     recordings = Recording.load_recordings(

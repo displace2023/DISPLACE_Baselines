@@ -7,5 +7,8 @@ fi
     $path/utt2spk > $path/spk2utt
 
 source=$path/rttm 
-target=$2/data/final.rttm
-cp $source $target 
+
+target=$2/final.rttm
+if [ -f $source ]; then
+  cp $source $target 
+fi

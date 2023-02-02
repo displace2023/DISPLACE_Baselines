@@ -4,3 +4,6 @@ numexpr
 intervaltree
 tabulate
 kaldi_io
+torch
+speechbrain
+fastcluster

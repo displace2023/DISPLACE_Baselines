@@ -23,33 +23,28 @@ X-vector extractor is a 13-layer TDNN model which follows the BIG DNN architectu
 
 The x-vector extractor, PLDA model, UBM-GMM, and total variability matrix were trained on [VoxCeleb I and II](https://www.robots.ox.ac.uk/~vgg/data/voxceleb/). Prior to PLDA scoring and clustering, the x-vectors are centered and whitened using statistics estimated from the DISPLACE development set part 1.
 
-# Prerequisites
-
-The following packages are required to run the baseline.
-
-- [Python](https://www.python.org/) >= 3.7
-- [Kaldi](https://github.com/kaldi-asr/kaldi)
-- [dscore](https://github.com/nryant/dscore)
-
-The data should be arranged for the baseline experiments should be as follows:  
+# Baseline for Language Dizarization
+The implementation of the language diarization baseline is based on a Agglomerative Hierarchical Clustering over language embeddings extracted from a spoken language recognition model trained on the VoxLingua107 dataset using SpeechBrain. The model was based on the ECAPA-TDNN architecture ([1](https://arxiv.org/abs/2005.07143)). VoxLingua covers 107 different languages . We used this model as an feature (embeddings) extractor . We experimented this model on our own data with a range of different hop lengths and frame sizes. 
+The steps involved for language diarization are speech activity detection, utterance-level feature extraction and followed by Agglomerative Hierarchical Clustering (AHC). 
 ```
-   
-───<DEV/EVAL data dir>
-    │
-    └─── data
-         |
-         └─── rttm 
-         |        |
-         |        └───<<Session_ID>_speaker.rttm>
-         │ 
-         └─── wav
-                 └───<<Session_ID>.wav>
-                 
+@inproceedings{valk2021slt,
+  title={{VoxLingua107}: a Dataset for Spoken Language Recognition},
+  author={J{\"o}rgen Valk and Tanel Alum{\"a}e},
+  booktitle={Proc. IEEE SLT Workshop},
+  year={2021},
+}
+
+@misc{speechbrain,
+  title={{SpeechBrain}: A General-Purpose Speech Toolkit},
+  author={Mirco Ravanelli and Titouan Parcollet and Peter Plantinga and Aku Rouhe and Samuele Cornell and Loren Lugosch and Cem Subakan and Nauman Dawalatabad and Abdelwahab Heba and Jianyuan Zhong and Ju-Chieh Chou and Sung-Lin Yeh and Szu-Wei Fu and Chien-Feng Liao and Elena Rastorgueva and François Grondin and William Aris and Hwidong Na and Yan Gao and Renato De Mori and Yoshua Bengio},
+  year={2021},
+  eprint={2106.04624},
+  archivePrefix={arXiv},
+  primaryClass={eess.AS},
+  note={arXiv:2106.04624}
+}
 ```
-We request the participants to arrange the shared DEV and EVAL sets in the above format for baseline computation.
-- The directory "rttm" should contain the rttm files corresponding to speaker splits.
-- The directory "wav" should contain the corresponding wav files.
-- The corresponding files in the directories are indicated by the <Session_ID>
+
 
 # Installation
   
@@ -98,77 +93,12 @@ cd ..
 ```
 
 Please check the output of these scripts to ensure that installation has succeeded. If succesful, you should see ``Successfully installed {Kaldi,dscore}.`` printed at the end. If installation of a component fails, please consult the output of the relevant installation script for additional details. If you already have the packages installed creating a softlink to the packages also works.
-  
-# Running the baseline recipes
-Change the path to
-```bash
-cd speaker_diarization/
-```
-
-# Dataset path
-open ``run.sh`` in a text editor. The first section of this script defines paths to the Displace challenge DEV and EVAL releases and should look something like the following:
-
-```bash
-################################################################################
-# Paths to Displace releases
-################################################################################
-
-DISPLACE_DEV_DIR=/data1/kaustubhk/Displace_DEV_1
-DISPLACE_EVAL_DIR=/data1/kaustubhk/Displace_EVAL_1
-  
-Change the variables ``DISPLACE_DEV_DIR`` and ``DISPLACE_DEV_DIR`` so that they point to the roots of the Displace DEV and EVAL releases on your filesystem. Save your changes, exit the editor, and run:
-
-```bash
-./run.sh
-```
-  
-### RTTM files
-
-Following the initial AHC segmentation step, RTTM files for the DEV set are written to:
-
-    exp/displace_diarization_nnet_1a_dev_fbank/per_file_rttm
-  
-Similarly, RTTM files for the EVAL set are written to:
-
-    exp/displace_diarization_nnet_1a_eval_fbank/per_file_rttm
-
-RTTM files will also be output after the VB-HMM resegmentation step, this time to:
-
-- ``exp/displace_diarization_nnet_1a_vbhmm_dev/per_file_rttm``
-- ``exp/displace_diarization_nnet_1a_vbhmm_eval/per_file_rttm``
-  
-### Scoring
-
-The performance is evaluated using [Diaration error rate (DER)](https://github.com/nryant/dscore) as the primary metric.
-
-DER = False Alarm speech + Missed Speech + Speaker Confusion error
-
-- speaker error -- percentage of scored time for which the wrong speaker id is assigned within a speech region
-- false alarm speech -- percentage of scored time for which a nonspeech region is incorrectly marked as containing speech
-- missed speech -- percentage of scored time for which a speech region is incorrectly marked as not containing speech
-
-DER on the DEV set for the output of the AHC step will be printed to STDOUT
-These scores are extracted from the original ``dscore`` logs, which are output to ``exp/displace_diarization_nnet_1a_dev_fbank/scoring``
-Similarly, the scores for the VB-HMM are output to ``exp/displace_diarization_nnet_1a_vbhmm_dev/scoring`` 
-  
-# Expected results
-
-Expected DER for the baseline system on the Displace challenge DEV set are presented in Table 1.
 
 
-**Table 1: Baseline speaker diarization results for the Displace development set(part 1) using just AHC and AHC followed by VB-HMM resegmentation.**
+## Step 4: Running the baselines
 
-|  Method       | DER (Dev)   | 
-| ------------  | ----------- |
-| AHC           |   28.81     |       
-| VB-HMM        |   27.7      |
-  
-
+Navigate to the ```speaker_diarization``` or ```language_diarization``` directories and follow the instructions in ```README.md``` to run the respective baseline systems.
   
 <!-- ## Pretrained SAD model
 
 We have placed a copy of the TDNN+stats SAD model used to produce these results on [Zenodo](https://zenodo.org/). To use this model, download and unarchive the [tarball](https://zenodo.org/record/4299009), then move it to ``speaker_diarization/exp``. -->
-
-  
-
-
