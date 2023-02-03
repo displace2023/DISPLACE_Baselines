@@ -18,12 +18,6 @@ __pycache__/
 LanguageNet.py
 pretrained_models
 loss
-utils/LanguageNet.py
-utils/pretrained_models
-utils/loss
-utils/models
-utils/extract_embeddings_for_kaldi.py
-models
 extract_embeddings_for_kaldi.py
 language_diarization/pretrained_models/lang-id-voxlingua107-ecapa/classifier.ckpt
 language_diarization/pretrained_models/lang-id-voxlingua107-ecapa/label_encoder.ckpt
