@@ -1,9 +1,5 @@
 <div align="left"><img src="../displace_img.png" width="550"/></div>
 
-# About the Challenge
-The DISPLACE challenge aims to address research issues related to speaker and language diarization in an inclusive manner. The goal of the challenge is to establish new benchmarks for speaker diarization (SD) in multilingual settings and language diarization (LD) in multi-speaker settings, using the same underlying dataset. 
-
-In this challenge, we provide a conversational dataset for speaker and language diarization task. The unique attritibutes of this dataset are that it consists of multiple speakers speaking in a code mixed meeting environment which makes the mentioned tasks of speaker and langauge diarization challenging. The further details about the challenge can be found at [DISPLACE 2023](https://displace2023.github.io/). 
 
 # Baseline for Language Dizarization
 The implementation of the language diarization baseline is based on a Agglomerative Hierarchical Clustering over language embeddings extracted from a spoken language recognition model trained on the VoxLingua107 dataset using SpeechBrain. The model was based on the ECAPA-TDNN architecture ([1](https://arxiv.org/abs/2005.07143)). VoxLingua covers 107 different languages . We used this model as an feature (embeddings) extractor . We experimented this model on our own data with a range of different hop lengths and frame sizes. 
@@ -26,11 +22,6 @@ The steps involved for language diarization are speech activity detection, utter
   note={arXiv:2106.04624}
 }
 
-```
-# Prerequisites
-Run the following command to install the required Python packages:
-```bash
-$ pip install -r requirements.txt
 ```
 
 # Running the baseline recipes
@@ -65,9 +56,7 @@ Change the variables ``DISPLACE_DEV_AUDIO_DIR``, ``DISPLACE_DEV_LABELS_DIR``, an
 
 # Expected results
 **Table 2: Baseline language diarization results for the Displace development set(part 1) using embeddings extraction from pretrained ECAPA TDNN SPEECHBRAIN model and  followed by AHC clustering.**
-# Expected results
 
-Expected DER for the language diarization baseline system on the Displace challenge DEV set are presented in Table 2.
 
 
 |  Method       | DER (Dev)   |  JER (Dev)  | 

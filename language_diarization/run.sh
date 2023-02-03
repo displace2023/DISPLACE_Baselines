@@ -67,7 +67,7 @@ if [ $stage -le 0 ]; then
   if [ -d "$DISPLACE_EVAL_AUDIO_DIR" ]; then 
   local/make_data_dir.py \
     data/displace_eval \
-    $DISPLACE_EVAL_AUDIO_DIR/data/wav 
+    $DISPLACE_EVAL_AUDIO_DIR 
    ./create_utt2spk_spk2utt.sh data/displace_eval $DISPLACE_EVAL_AUDIO_DIR
   ./utils/validate_data_dir.sh \
     --no-text --no-feats data/displace_eval/
