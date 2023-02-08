@@ -28,9 +28,9 @@ clustering_mode=AHC
 # Paths to DISPLACE 2023 releases
 ################################################################################
 
-DISPLACE_DEV_AUDIO_DIR=/home/shreyasr/zenodo_downloads/DISPLACE_2023_Dev-Part1_Release/
-DISPLACE_DEV_LABELS_DIR=/home/shreyasr/zenodo_downloads/DISPLACE_2023_Dev-Part1_Label_Release
-DISPLACE_DEV_RTTM_DIR=$DISPLACE_DEV_LABELS_DIR/RTTM/Track-2\:LD
+DISPLACE_DEV_AUDIO_DIR=/home/data/displace2023/dev
+DISPLACE_DEV_LABELS_DIR=/home/data/displace2023/dev
+DISPLACE_DEV_RTTM_DIR=$DISPLACE_DEV_LABELS_DIR
 
 DISPLACE_EVAL_AUDIO_DIR=/home/shreyasr/zenodo_downloads/DISPLACE_2023_Dev-Part1_Release/
 
@@ -54,6 +54,7 @@ if [ $stage -le 0 ]; then
   if [ -d "$DISPLACE_DEV_AUDIO_DIR" ]; then 
   local/make_data_dir.py \
   --rttm-dir $DISPLACE_DEV_RTTM_DIR \
+  --rttm-type "LANGUAGE" \
     data/displace_dev \
     $DISPLACE_DEV_AUDIO_DIR
   ./create_utt2spk_spk2utt.sh data/displace_dev $DISPLACE_DEV_AUDIO_DIR

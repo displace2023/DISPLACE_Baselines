@@ -9,6 +9,10 @@ fi
 source=$path/rttm 
 
 target=$2/final.rttm
+{
 if [ -f $source ]; then
   cp $source $target 
 fi
+} || {
+  echo "Couldnt copy final rttm to $target (Permission issues?). Proceeding anyway..."
+}

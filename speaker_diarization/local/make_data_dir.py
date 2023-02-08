@@ -158,7 +158,7 @@ class Recording:
 
 
     @staticmethod
-    def load_recordings(sad_dir, wav_dir, rttm_dir=None):
+    def load_recordings(sad_dir, wav_dir, rttm_dir=None, rttm_type="SPEAKER"):
         """Load recordings from FLAC, SAD, and RTTM files.
 
         Parameters
@@ -182,13 +182,16 @@ class Recording:
         if rttm_dir is not None:
             rttm_dir = Path(rttm_dir)
         recordings = []
-        wav_paths = sorted(wav_dir.glob('**/*.wav'))
+        wav_paths = sorted(wav_dir.glob('**/*.wav'), key=lambda x:x.stem)
         if rttm_dir is not None and rttm_dir.exists():
-            rttm_paths = sorted(rttm_dir.glob('**/*.rttm'))
+            rttm_paths = sorted(rttm_dir.glob(f'**/*{rttm_type}.rttm'), key=lambda x:x.stem)
+            assert len(wav_paths) == len(rttm_paths), "Release Directory Error: the number of audio and rttm files do not match. Please check!"
         else:
             rttm_paths = [None for w in wav_paths]
         for wav_path, rttm_path in zip(wav_paths, rttm_paths):
             recording_id = wav_path.stem
+            if rttm_path is not None:
+                assert recording_id in str(rttm_path), f"Some issue with the paths of recording {recording_id}: {str(wav_path)} and {str(rttm_path)} do not match."
             if sad_dir is not None:
                 lab_path = Path(sad_dir, recording_id + '.lab')
             else:
@@ -347,6 +350,9 @@ def main():
     parser.add_argument(
         '--rttm-dir', metavar='PATH', type=Path, nargs=None, default=None,
         help='path to source RTTM directory')
+    parser.add_argument(
+        '--rttm-type', type=str, nargs=None, default="SPEAKER",
+        help='"SPEAKER" for speaker rttms, "LANGUAGE" for language rttms')
     parser.add_argument(
         '--target-sr', metavar='SR', type=int, default=16000,
         help='resample audio to SR Hz (default: %(default)s)')
