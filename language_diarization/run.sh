@@ -177,7 +177,7 @@ fi
 if [ $stage -le 5 ]; then
 
     output_rttm_files=$output_rttm_path/$subsegs_basename/$clustering_mode/*.rttm
-    ground_truth_rttm_files=$DISPLACE_DEV_RTTM_DIR/*.rttm
+    ground_truth_rttm_files=data/displace_dev/rttm
 
     echo "Evaluating output in $output_rttm_path/$subsegs_basename/$clustering_mode/..."
     $PYTHON ../tools/dscore/score.py --collar 0.0 --step 0.01 \
