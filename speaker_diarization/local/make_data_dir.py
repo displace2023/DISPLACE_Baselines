@@ -367,7 +367,7 @@ def main():
     has_rttm = args.rttm_dir is not None and args.rttm_dir.exists()
     args.data_dir.mkdir(parents=True, exist_ok=True)
     recordings = Recording.load_recordings(
-        args.sad_dir, args.wav_dir, args.rttm_dir)
+        args.sad_dir, args.wav_dir, args.rttm_dir, rttm_type=args.rttm_type)
     if args.rec_ids is not None:
         with open(args.rec_ids, 'r') as f:
             keep_rec_ids = {line.strip() for line in f}
